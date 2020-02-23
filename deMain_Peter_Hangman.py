@@ -64,6 +64,9 @@ def clear():
   os.system("clear") 
 
 def loose():
+  clear()
+  print(challenge_word)
+  print("You have 0 lives remaining.")
   print("You loose")
   sys.exit(0)
   
@@ -162,7 +165,9 @@ def mainFunc(lives):
   if originalAarry == blank_challenge_array:
     clear()
     print(challenge_word)
+    print("")
     print("Congratulations you win")
+    sys.exit(0)
   
 
 mainFunc(lives)
