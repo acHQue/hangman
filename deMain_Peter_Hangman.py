@@ -163,9 +163,7 @@ def mainFunc(lives):
     clear()
     print(challenge_word)
     print("Congratulations you win")
-  if lives == 0:
-    clear()
-    print("YOU LOOSE!!")
+  
 
 mainFunc(lives)
 #print(intelligence)
