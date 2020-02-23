@@ -83,7 +83,7 @@ def mainFunc(lives):
       loose()
       break
 
-    print(challenge_array)
+    #print(challenge_array)
     print("")
     print("These are your guesses")
     print(guesses)
