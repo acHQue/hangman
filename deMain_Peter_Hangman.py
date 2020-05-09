@@ -1,4 +1,4 @@
-#
+# JHub Coding Scheme (JCS) Module 3: python
 #
 import random
 import os
