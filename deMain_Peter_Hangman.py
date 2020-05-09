@@ -60,7 +60,7 @@ def gameOver(lives):
     print("You loose!")
     print("")
     print("You have ",lives," lives left.")
-    print(*originalArray,sep="")
+    print(*matchArray,sep="")
     sys.exit(0)
 
 def win():
@@ -68,7 +68,8 @@ def win():
     the word"""
     clear()
     print("")
-    print(*originalArray,sep="")
+    print(*matchArray
+           ,sep="")
     print("Congratulations, YOU WIN!")
     sys.exit(0)
 
