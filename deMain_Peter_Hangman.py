@@ -1,176 +1,140 @@
 #
+#
 import random
 import os
 import sys
 
-wordlist = "word_list.txt"
 star = "*"
-
-guesses = []
-originalAarry = []
-challenge_array = []
+lives = 7
 blank_challenge_array = []
+originalArray = []
+matchArray = []
+guesses = []
 intelligence = {}
 
-total_lines_in_wordlist = int(len(open(wordlist).readlines()))
-random_line = int(random.randint(0, (total_lines_in_wordlist - 1)))
+wordlist = "word_list.txt" 
 
-fh = open(wordlist)
-challenge_word = fh.readlines()[random_line]
-fh.close()
-
-number_letters_challenge = len(challenge_word) 
-number_blanks = (number_letters_challenge)
-true_word_line = int(random_line)
-
-for i in range(len(challenge_word)):
-  originalAarry.append(challenge_word[i])
-
-for i in range(len(challenge_word)):
-  
-	challenge_array.append(challenge_word[i])
-	blank_challenge_array.append(star)
-	#print(word[i])
-
-for i in range(97, 123):
-  n = {chr(i):challenge_array.count(chr(i))}
-  intelligence.update(n)
-
-
-if random_line == (total_lines_in_wordlist -1):
-
-    #print("This is the last word in the this")
-    print("")
-else:
-    # This else statement basiclyy rewrite the challenge_array and the blank_challenge_array because of the the trailing carrage return. Messy but is work :D 
-    #print("This number of elements in the challenge_arry list is ", len(challenge_array))
-    lastElement = len(challenge_array) - 1
-    challenge_array = [l.strip() for l in challenge_array]
+def getWord():
+    """This function opens, counts lines, randomly chooses, and closes
+    the wordlist. Loads the random word into a list, a letter per element.
+    the word is a raw format, trailing a \n character which is stripped.
+    the newly stripped list is then used to truely calculate original array
+    elements.
+    """
     
-    challenge_array.pop(lastElement)
-    originalAarry.pop(lastElement)
-    #print(challenge_word)
-    #print("Because all but the last word in the word list contains a n a the end the blanks nee to be changed ", len(challenge_word) - 1)
-    len(challenge_word) - 1
-    number_letters_challenge = number_letters_challenge -1
-    number_blanks = (number_letters_challenge)
-    del blank_challenge_array
-    blank_challenge_array = []
-    for x in range(number_blanks):
-        blank_challenge_array.append('*')
+    total_lines_in_wordlist = int(len(open(wordlist).readlines()))
+    random_line = (int(random.randint(0, (total_lines_in_wordlist - 1)))) 
+    fh = open(wordlist)
+    challenge_word = fh.readlines()[random_line]
+    challenge_word_length = (len(challenge_word) - 1)
+    for i in range(0, len(challenge_word)):
+        originalArray.append(challenge_word[i])
+        matchArray.append(challenge_word[i])
+    if "\n" in originalArray:
+        originalArray.remove("\n")
+        matchArray.remove("\n")
+        
+    #print(originalArray) # cheat
+
+    for i in range(0, len(originalArray)):
+        blank_challenge_array.append(star)
+
+    fh.close()
 
 def clear():
-  os.system("cls")
-  os.system("clear") 
+    """This fuction is for clearing the terminal to keep it tidy."""
+    os.system("cls")
+    os.system("clear")
 
-def loose():
-  clear()
-  print(challenge_word)
-  print("You have 0 lives remaining.")
-  print("You loose")
-  sys.exit(0)
-  
+def takeLife(lives):
+    """This function subtracts 1 life from the lives count."""
+    l = lives - 1
+    lives = l
+    
+    #print(lives)
+    takeInput(lives)
 
-lives = 7
+def gameOver(lives):
+    """When you run out of lives this fc"""
+    print("")
+    print("You loose!")
+    print("")
+    print("You have ",lives," lives left.")
+    print(*originalArray,sep="")
+    sys.exit(0)
 
-def mainFunc(lives):
-  
+def win():
+    """This fucntion ends the programe when the word is guessed and, reviels
+    the word"""
+    clear()
+    print("")
+    print(*originalArray,sep="")
+    print("Congratulations, YOU WIN!")
+    sys.exit(0)
 
-  print("")
-  print("You have ",lives, " lives remaining.")
-  print("")
-
-  while originalAarry != blank_challenge_array:
+    
+def takeInput(lives):
+    """This function takes user input and validates it, along with learning
+    how many letter of the alfabet are in the word for iteration in the check
+    funciton."""
+    clear()
     
     if lives == 0:
-      loose()
-      break
+        gameOver(lives)
+        
+    #print(*originalArray,sep="")
+    #print(guesses)
+    print("You have ",lives," lives left.")
+    print(*blank_challenge_array,sep="")
+    ui = input("Please enter your next guess: ")
 
-    #print(challenge_array)
-    print("")
-    print("These are your guesses")
-    print(guesses)
-    print("")
-    print("Here is your clue.")
-    print(blank_challenge_array)
-    print("")
-    userIn = input("Please enter your next guess: ")
+    while len(ui) < 1 or len(ui) > 1:
+       # print("Are you playing??")
+        ui = input("Please enter your next guess: ")
+        
+    check(ui,lives)
 
+def intel(intelligence,originalArray):
+    """using the ascii table, the intelligence array populate elements with the lowercase alphabet"""
+    for i in range(97, 123):  
+        n = {chr(i):originalArray.count(chr(i))}  
+        intelligence.update(n)
+        
+
+def check(ui,lives):
+    """This function converts user input to lowercase, checks privous guesses
+    are not taking another life, checks if user input is in the word and takes
+    a like if it isn't."""
+    #print(intelligence) #print the intelligence dictionary
     
-
+    print("")
+    userIn = ui.lower()
+    if ui in guesses:
+        takeInput(lives)
     guesses.append(userIn)
 
-    if len(userIn) < 1:
-        clear()
-        print("Are you playing??")
-        print("")
-        mainFunc(lives)
-    elif len(userIn) > 1:
-        clear()
-        print("Only submit one letter per try.")
-        print("")
-        mainFunc(lives)
-    elif userIn == " ":
-      clear()
-      mainFunc(lives)
-    elif userIn not in challenge_array:
-      clear()
-      lives = lives - 1
-      mainFunc(lives)
-    
-      
-    else:
-        clear()
-
-    
-
-
-
-    if userIn in originalAarry:
-
-      #print("There is ",intelligence[userIn], "of those.")
-      #This is to find out how many to remove and add.
-      #for x, y in intelligence.items():
-      #  print(x, y)
-      #print("Find the indexes")
-
-      for i in range(0,intelligence.get(userIn)):
+    if (userIn in originalArray):
         
-        #print(userIn, "User guesss.") 
-        #print(word)
-        #print(array.index(userIn), "This is the index of list.")
-        #print(intelligence.get(userIn), "  Retreiveing data about the letter chosen. ")   
-        #print(userIn)
-        #print(array.index(userIn), "The indexes....")
-        indexes = challenge_array.index(userIn) # to remember the location and progress.    
-        #print(indexes, "Variable of remembered Index")
-        #print(array.pop(array.index(userIn)), "e")
-        challenge_array.pop(challenge_array.index(userIn))
-        #print(array.insert(indexes, star), "f")
-        challenge_array.insert(indexes, star)
-        blank_challenge_array.pop(indexes)
-        #print(blank.insert(indexes, userIn),"g")
-        blank_challenge_array.insert(indexes, userIn)
+        for i in range(0,intelligence.get(userIn)):
+            NGindex = originalArray.index(userIn)
+            originalArray.pop(originalArray.index(userIn))
+            originalArray.insert(NGindex, star)
+            blank_challenge_array.pop(NGindex)
+            blank_challenge_array.insert(NGindex, userIn)
 
+        if matchArray == blank_challenge_array:
+            win()
+        
+        takeInput(lives)
     else:
-      
-      print("No letter found within the challenge word.")
-      print("")
-      mainFunc(lives)
+        
+        takeLife(lives)
+
+def main():
+    """This is the main function of the programe. which calls three functions."""
+    getWord()
+    intel(intelligence,originalArray)
+    takeInput(lives)
     
-
-      continue
-
-  
-  if originalAarry == blank_challenge_array:
-    clear()
-    print(challenge_word)
-    print("")
-    print("Congratulations you win")
-    sys.exit(0)
-  
-
-mainFunc(lives)
-#print(intelligence)
-
-
+   
+main()
