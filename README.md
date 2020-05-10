@@ -1,16 +1,12 @@
 # Hangman
 
-THE NEW CODE
+# THE NEW CODE
+
+Is here on git hub.
 
 
 
-
-
-
-
-THE OLD CODE
-
-Visist the real working code VIA the link bellow.
+# THE OLD CODE
 
 https://repl.it/@HQACHQUE/Hangman-final
 
