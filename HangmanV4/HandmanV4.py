@@ -48,7 +48,7 @@ def genWord():
     with open(wordlist) as file:                # This was changed to conform with comment on 20200610
         data = file.readlines()           
     challenge_word = (random.choice(data))      # This way of determining the random word also solves the out of bound index. 
-    print(challenge_word)
+    #print(challenge_word)
 
     for i in range(0, len(challenge_word)):                                         #This for loop injects each letter of the challenge_word into 3 lists.
         origWordList.append(challenge_word[i])
