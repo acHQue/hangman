@@ -1,0 +1,192 @@
+import random
+import os
+
+wordlist = "word_list.txt"
+
+total_lines_in_wordlist = int(len(open(wordlist).readlines()))
+random_line = int(random.randint(0, (total_lines_in_wordlist - 1)))
+
+fh = open(wordlist)
+challenge_word = fh.readlines()[random_line]
+fh.close()
+
+number_letters_challenge = len(challenge_word) 
+number_blanks = (number_letters_challenge)
+true_word_line = int(random_line)
+
+lives = int(7)
+
+blank_challenge_array = []
+challenge_array = []
+test = iter(challenge_array)
+guess = []
+
+key = []
+thedic = {}
+
+
+
+
+
+#These loops generate the lists and the dictionary 
+#This list generates the blank array
+for x in range(number_blanks):
+  blank_challenge_array.append('*')
+
+#this loop generates moves each letter of a work into a list
+for x in range(len(challenge_word)):
+  #print(x)
+  #print(challenge_word[x])
+  #blank_challenge_array.append(challenge_word[x])
+  challenge_array.append(challenge_word[x])
+
+#this loop generates the number elements for the dictionary
+for x in range(len(challenge_word) ):
+  #print(x)
+  key.append(x)
+
+#this loop builds a dictionary and inserts the letters and key numbers into a dictionary 
+for x in range(len(challenge_word) ):
+    a = key[x]
+    b = challenge_array[x]
+    thedic.update({a:b})
+
+if random_line == (total_lines_in_wordlist -1):
+
+    #print("This is the last word in the this")
+    print("")
+else:
+    # This else statement basiclyy rewrite the challenge_array and the blank_challenge_array because of the the trailing carrage return. Messy but is work :D 
+    print("This number of elements in the challenge_arry list is ", len(challenge_array))
+    lastElement = len(challenge_array) - 1
+    challenge_array = [l.strip() for l in challenge_array]
+    
+    challenge_array.pop(lastElement)
+    print(challenge_word)
+    #print("Because all but the last word in the word list contains a n a the end the blanks nee to be changed ", len(challenge_word) - 1)
+    len(challenge_word) - 1
+    number_letters_challenge = number_letters_challenge -1
+    number_blanks = (number_letters_challenge)
+    del blank_challenge_array
+    blank_challenge_array = []
+    for x in range(number_blanks):
+        blank_challenge_array.append('*')
+    
+
+def mainFunc():
+
+  #def info():
+    #print(total_lines_in_wordlist," :Words in wordlist.")
+    #print(random_line," :Randomly picked line.")
+    #print
+    #print(number_letters_challenge, " :Number of letters in the challenge word.")
+    #print(number_blanks, " :Blanks generated frome the random challenge words.")
+    #print(true_word_line, " :The true word line. Same as random_line :/")
+    #print(lives, " :Number of lives left.")
+    #print(blank_challenge_array, " :The loaded blank array." )
+    #print(challenge_array, " :The loaded challege array.")
+    #print(guess, " :Here are the attempted guesses.")
+    #print
+    #print(key, "The loaded keys.")
+    #print(thedic, "The loaded dictionary.")
+
+    #info()
+
+  def clear():
+    os.system("cls")
+    os.system("clear") 
+  
+
+  print("")
+  print("You have ", lives, " lives.")
+  print("")
+
+
+
+
+  while challenge_array != blank_challenge_array:
+    
+    print("")
+    print("Welcome to the game of Hangman MOD3.")
+    print("===================================")
+    print("")
+    print(blank_challenge_array)
+    print("")
+    
+    attempt = input("Enter a single letter to begin playing hangman:")
+    
+    str(attempt)
+
+    #User input validation.
+    def inputValidation(attempt):
+      #print(attempt.lower())
+      if len(attempt) < 1:
+        clear()
+        print("Are you playing??")
+        mainFunc()
+      elif len(attempt) > 1:
+        clear()
+        print("Only submit one letter per try.")
+        mainFunc()
+      else:
+        clear()
+        
+
+    inputValidation(attempt)
+
+    #Processes The Challenge
+    def inputProcessing(attempt, lives, blank_challenge_array,test):
+
+      guess.append(attempt)
+      guess.reverse()
+      print(guess, " This is the reversed guess array")
+      print("")
+      print(challenge_array)
+      print("")
+      print(blank_challenge_array)
+      print("")
+      print("You have ", lives," lives left.")
+
+
+      #Here
+
+
+      for i in range(len(challenge_word)):
+        
+        x = next(test)
+        
+        #print(x)
+        
+        if x == attempt:
+          #print("it works")
+          #print(i)
+          blank_challenge_array.pop(i)
+          blank_challenge_array.insert(i, attempt)
+          mainFunc()
+        else:
+          #print("letter not there.")
+          life = lives - 1
+
+        
+           
+
+
+    inputProcessing(attempt, lives, blank_challenge_array,test)
+
+    continue
+
+    
+  
+mainFunc()
+
+if life == 0:
+  print("You loose.")
+
+print("You Win!")
+
+
+  
+
+
+
+
